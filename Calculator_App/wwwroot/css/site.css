@@ -1,0 +1,119 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+main {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    min-height: 300px;
+}
+
+.calculator-output {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px;
+    width: 91%;
+    height: 50px;
+    border: 1px solid #333;
+    border-radius: 10px;
+}
+
+.output-syntax {
+    margin-bottom: 10px;
+}
+
+.output-syntax, .output-number {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    width: 100%;
+}
+
+.calculator-func {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.calculator-operators-top {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    grid-column: 1/5;
+}
+
+.calculator-number {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column: 1/4;
+    grid-gap: 10px;
+}
+
+.calculator-operators-side {
+    display: grid;
+    grid-gap: 10px;
+}
+
+button {
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    button:hover {
+        background-color: #ddd;
+    }
+
+
+.display {
+    background-color: #222;
+    color: white;
+    font-size: 2em;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    text-align: right;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100vw;
+}

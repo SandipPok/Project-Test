@@ -1,0 +1,51 @@
+﻿<div class="calculator">
+    <div class="calculator-output">
+        <div class="output-syntax"></div>
+        <div class="output-number">0</div>
+    </div>
+    <div class="calculator-func">
+        <div class="calculator-operators-top">
+            <button type="button">%</button>
+            <button type="button">CE</button>
+            <button type="button">C</button>
+            <button type="button">⌫</button>
+            <button type="button">1/x</button>
+            <button type="button">x²</button>
+            <button type="button">√x</button>
+            <button type="button">÷</button>
+        </div>
+        <div class="calculator-number">
+            <button type="button">7</button>
+            <button type="button">8</button>
+            <button type="button">9</button>
+            <button type="button">4</button>
+            <button type="button">5</button>
+            <button type="button">6</button>
+            <button type="button">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <button type="button">0</button>
+            <button type="button">+/-</button>
+            <button type="button">.</button>
+        </div>
+        <div class="calculator-operators-side">
+            <button type="button">x</button>
+            <button type="button">-</button>
+            <button type="button">+</button>
+            <button type="button">=</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var buttons = document.getElementsByTagName("button");
+            Array.from(buttons).forEach(function (button) {
+                button.addEventListener("click", function () {
+                    console.log(button.innerText + " clicked");
+                });
+            });
+        });
+    </script>
+}
