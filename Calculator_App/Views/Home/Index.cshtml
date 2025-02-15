@@ -38,105 +38,163 @@
 </div>
 
 <script>
-    var continuousNum = false; // Flag to track continuous numbers
-    var out_num = document.querySelector('.output-number');
-    var out_sym = document.querySelector('.output-syntax');
+    // Declare constants
+    const out_num = document.querySelector('.output-number');
+    const out_sym = document.querySelector('.output-syntax');
+    let continuousNum = false;
 
+    // Event listener for button clicks
     document.addEventListener('DOMContentLoaded', function () {
-        var buttons = document.getElementsByTagName("button");
-        Array.from(buttons).forEach(function (button) {
-            button.addEventListener("click", function () {
-                pushToOutput(button.innerText);
-            });
+        document.querySelector('.calculator').addEventListener('click', function (event) {
+            if (event.target.tagName === 'BUTTON') {
+                pushToOutput(event.target.innerText);
+            }
         });
     });
 
+    // Helper function to evaluate expressions
+    function evaluateExpression(expression) {
+        try {
+            expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
+            return eval(expression);
+        } catch (error) {
+            return 'Error';
+        }
+    }
+
+    // Main function to handle button clicks
     function pushToOutput(number) {
         number = number.trim();
 
-        switch (true) {
-            case (!isNaN(number) && number !== ""): // Case for numbers
-                if (!continuousNum) {
-                    out_num.innerText = number;
-                } else {
-                    out_num.innerText += number;
-                }
-                continuousNum = true;
+        switch (number) {
+            case '=':
+                handleEqual();
                 break;
 
-            case (number === "="): // Case for "=" (equals)
-                try {
-                    let expression = out_sym.innerText.trim();
-
-                    if (out_num.innerText.trim() !== "") {
-                        expression += ` ${out_num.innerText.trim()}`;
-                    }
-
-                    expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
-
-                    out_num.innerText = eval(expression);
-                    out_sym.innerText = "";
-                } catch (error) {
-                    out_num.innerText = "Error";
-                    throw error;
-                }
-                continuousNum = false;
+            case 'C':
+                clearAll();
                 break;
 
-            case (number === "C"): // Case for "C" (clear all)
-                out_num.innerText = "";
-                out_sym.innerText = "";
-                continuousNum = false;
+            case 'CE':
+                clearEntry();
                 break;
 
-            case (number === "CE"): // Case for "CE" (clear entry)
-                out_num.innerText = "";
-                continuousNum = false;
+            case '⌫':
+                backspace();
                 break;
 
-            case (number === "⌫"): // Case for "⌫" (backspace)
-                out_num.innerText = out_num.innerText.slice(0, -1);
-                continuousNum = true;
+            case 'x²':
+                square();
                 break;
 
-            case (number === "x²"): // Case for "x²" (square)
-                out_num.innerText = Math.pow(parseFloat(out_num.innerText), 2);
+            case '1/x':
+                inverse();
                 break;
 
-            case (number === "1/x"): // Case for "1/x" (inverse)
-                out_num.innerText = 1 / parseFloat(out_num.innerText);
+            case '√x':
+                squareRoot();
                 break;
 
-            case (number === "√x"): // Case for "√x" (square root)
-                out_num.innerText = Math.sqrt(parseFloat(out_num.innerText));
+            case '+/-':
+                toggleSign(number);
                 break;
 
-            case (number === "+/-"): // Case for "+/-" (toggle sign)
-                out_num.innerText = `-${out_num.innerText}`;
+            case '.':
+                appendDecimal();
                 break;
 
-            case (number === "."): // Case for "." (decimal point)
-                out_num.innerText += ".";
-                break;
-
-            default: // Case for operators (+, -, x, ÷, etc.)
-                if (out_num.innerText !== "" && out_sym.innerText !== "") {
-                    let expression = out_sym.innerText.trim();
-                    if (out_num.innerText.trim() !== "") {
-                        expression += ` ${out_num.innerText.trim()}`;
-                    }
-                    expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
-                    expression = eval(expression);
-
-                    out_sym.innerText = ` ${expression} ${number} `;
-                    out_num.innerText = expression;
-                }
-                else if (out_num.innerText !== "") {
-                    out_sym.innerText += ` ${out_num.innerText} ${number} `;
-                }
-                continuousNum = false;
+            default:
+                handleDefault(number);
                 break;
         }
     }
 
+    // Handle equals ('=')
+    function handleEqual() {
+        let expression = out_sym.innerText.trim();
+        if (out_num.innerText.trim() !== "") {
+            expression += ` ${out_num.innerText.trim()}`;
+        }
+        out_num.innerText = evaluateExpression(expression);
+        out_sym.innerText = "";
+        continuousNum = false;
+    }
+
+    // Clear all
+    function clearAll() {
+        out_num.innerText = "";
+        out_sym.innerText = "";
+        continuousNum = false;
+    }
+
+    // Clear entry
+    function clearEntry() {
+        out_num.innerText = "";
+        continuousNum = false;
+    }
+
+    // Backspace
+    function backspace() {
+        out_num.innerText = out_num.innerText.slice(0, -1);
+        continuousNum = true;
+    }
+
+    // Square
+    function square() {
+        out_num.innerText = Math.pow(parseFloat(out_num.innerText), 2);
+    }
+
+    // Inverse (1/x)
+    function inverse() {
+        out_num.innerText = 1 / parseFloat(out_num.innerText);
+    }
+
+    // Square root
+    function squareRoot() {
+        out_num.innerText = Math.sqrt(parseFloat(out_num.innerText));
+    }
+
+    // Toggle sign (+/-)
+    function toggleSign(number) {
+        var input = out_num.innerText.trim();
+        if (input[0] !== "-") {
+            out_num.innerText = `-${out_num.innerText}`;
+        }
+        else {
+            out_num.innerText = input.slice(1, input.length);
+        }
+    }
+
+    // Append decimal
+    function appendDecimal() {
+        if (!out_num.innerText.includes('.')) {
+            out_num.innerText += ".";
+        }
+    }
+
+    // Handle operators and numbers
+    function handleDefault(number) {
+        if (!isNaN(number) && number !== "") {
+            if (!continuousNum) {
+                out_num.innerText = number;
+            } else {
+                out_num.innerText += number;
+            }
+            continuousNum = true;
+        } else if (out_num.innerText !== "") {
+            let expression = out_sym.innerText.trim();
+            if (out_num.innerText.trim() !== "") {
+                expression += ` ${out_num.innerText.trim()}`;
+            }
+            expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
+            expression = evaluateExpression(expression);
+            out_sym.innerText = ` ${expression} ${number} `;
+            out_num.innerText = expression;
+            continuousNum = false;
+        } else {
+            if (out_sym.innerText === "") return;
+            out_sym.innerText += ` ${out_num.innerText} ${number} `;
+            continuousNum = false;
+        }
+    }
 </script>
