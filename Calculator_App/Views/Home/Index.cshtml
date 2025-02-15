@@ -54,68 +54,89 @@
     function pushToOutput(number) {
         number = number.trim();
 
-        if (!isNaN(number) && number !== "") {
-            if (!continuousNum) {
-                out_num.innerText = number;
-            } else {
-                out_num.innerText += number;
-            }
-            continuousNum = true;
-        } else if (number === "=") {
-            try {
-                let expression = out_sym.innerText.trim();
-
-                if (out_num.innerText.trim() !== "") {
-                    expression += ` ${out_num.innerText.trim()}`;
+        switch (true) {
+            case (!isNaN(number) && number !== ""): // Case for numbers
+                if (!continuousNum) {
+                    out_num.innerText = number;
+                } else {
+                    out_num.innerText += number;
                 }
+                continuousNum = true;
+                break;
 
-                expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
+            case (number === "="): // Case for "=" (equals)
+                try {
+                    let expression = out_sym.innerText.trim();
 
-                out_num.innerText = eval(expression);
+                    if (out_num.innerText.trim() !== "") {
+                        expression += ` ${out_num.innerText.trim()}`;
+                    }
+
+                    expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
+
+                    out_num.innerText = eval(expression);
+                    out_sym.innerText = "";
+                } catch (error) {
+                    out_num.innerText = "Error";
+                    throw error;
+                }
+                continuousNum = false;
+                break;
+
+            case (number === "C"): // Case for "C" (clear all)
+                out_num.innerText = "";
                 out_sym.innerText = "";
-            } catch (error) {
-                out_num.innerText = "Error";
-                throw error;
-            }
-            continuousNum = false;
-        } else if (number === "C") {
-            out_num.innerText = "";
-            out_sym.innerText = "";
-            continuousNum = false;
-        } else if (number === "CE") {
-            out_num.innerText = "";
-            continuousNum = false;
-        } else if (number === "⌫") {
-            out_num.innerText = out_num.innerText.slice(0, -1);
-            continuousNum = true;
-        } else if (number === "x²") {
-            out_num.innerText = Math.pow(parseFloat(out_num.innerText), 2);
-        } else if (number === "1/x") {
-            out_num.innerText = 1 / parseFloat(out_num.innerText);
-        } else if (number === "√x") {
-            out_num.innerText = Math.sqrt(parseFloat(out_num.innerText));
-        } else if (number === "+/-") {
-            out_num.innerText = `-${out_num.innerText}`;
-        } else if (number === ".") {
-            out_num.innerText += ".";
-        }
-        else {
-            if (out_num.innerText !== "" && out_sym.innerText !== "") {
-                let expression = out_sym.innerText.trim();
-                if (out_num.innerText.trim() !== "") {
-                    expression += ` ${out_num.innerText.trim()}`;
+                continuousNum = false;
+                break;
+
+            case (number === "CE"): // Case for "CE" (clear entry)
+                out_num.innerText = "";
+                continuousNum = false;
+                break;
+
+            case (number === "⌫"): // Case for "⌫" (backspace)
+                out_num.innerText = out_num.innerText.slice(0, -1);
+                continuousNum = true;
+                break;
+
+            case (number === "x²"): // Case for "x²" (square)
+                out_num.innerText = Math.pow(parseFloat(out_num.innerText), 2);
+                break;
+
+            case (number === "1/x"): // Case for "1/x" (inverse)
+                out_num.innerText = 1 / parseFloat(out_num.innerText);
+                break;
+
+            case (number === "√x"): // Case for "√x" (square root)
+                out_num.innerText = Math.sqrt(parseFloat(out_num.innerText));
+                break;
+
+            case (number === "+/-"): // Case for "+/-" (toggle sign)
+                out_num.innerText = `-${out_num.innerText}`;
+                break;
+
+            case (number === "."): // Case for "." (decimal point)
+                out_num.innerText += ".";
+                break;
+
+            default: // Case for operators (+, -, x, ÷, etc.)
+                if (out_num.innerText !== "" && out_sym.innerText !== "") {
+                    let expression = out_sym.innerText.trim();
+                    if (out_num.innerText.trim() !== "") {
+                        expression += ` ${out_num.innerText.trim()}`;
+                    }
+                    expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
+                    expression = eval(expression);
+
+                    out_sym.innerText = ` ${expression} ${number} `;
+                    out_num.innerText = expression;
                 }
-                expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
-
-                expression = eval(expression);
-
-                out_sym.innerText = ` ${expression} ${number} `;
-                out_num.innerText = expression;
-            }
-            else if (out_num.innerText !== "") {
-                out_sym.innerText += ` ${out_num.innerText} ${number} `;
-            }
-            continuousNum = false;
+                else if (out_num.innerText !== "") {
+                    out_sym.innerText += ` ${out_num.innerText} ${number} `;
+                }
+                continuousNum = false;
+                break;
         }
     }
+
 </script>
