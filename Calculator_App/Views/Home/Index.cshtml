@@ -1,7 +1,7 @@
 ﻿<div class="calculator">
     <div class="calculator-output">
         <div class="output-syntax"></div>
-        <div class="output-number">0</div>
+        <div class="output-number"></div>
     </div>
     <div class="calculator-func">
         <div class="calculator-operators-top">
@@ -24,8 +24,8 @@
             <button type="button">1</button>
             <button type="button">2</button>
             <button type="button">3</button>
-            <button type="button">0</button>
             <button type="button">+/-</button>
+            <button type="button">0</button>
             <button type="button">.</button>
         </div>
         <div class="calculator-operators-side">
@@ -37,15 +37,74 @@
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var buttons = document.getElementsByTagName("button");
-            Array.from(buttons).forEach(function (button) {
-                button.addEventListener("click", function () {
-                    console.log(button.innerText + " clicked");
-                });
+<script>
+    var continuousNum = false; // Flag to track continuous numbers
+    var out_num = document.querySelector('.output-number');
+    var out_sym = document.querySelector('.output-syntax');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var buttons = document.getElementsByTagName("button");
+        Array.from(buttons).forEach(function (button) {
+            button.addEventListener("click", function () {
+                pushToOutput(button.innerText);
             });
         });
-    </script>
-}
+    });
+
+    function pushToOutput(number) {
+        number = number.trim();
+
+        if (!isNaN(number) && number !== "") {
+            if (!continuousNum) {
+                out_num.innerText = number;
+            } else {
+                out_num.innerText += number;
+            }
+            continuousNum = true;
+        } else if (number === "=") {
+            try {
+                let expression = out_sym.innerText.trim();
+
+                if (out_num.innerText.trim() !== "") {
+                    expression += ` ${out_num.innerText.trim()}`;
+                }
+
+                expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
+
+                out_num.innerText = eval(expression);
+                out_sym.innerText = "";
+            } catch (error) {
+                out_num.innerText = "Error";
+                throw error;
+            }
+            continuousNum = false;
+        } else if (number === "C") {
+            out_num.innerText = "";
+            out_sym.innerText = "";
+            continuousNum = false;
+        } else if (number === "CE") {
+            out_num.innerText = "";
+            continuousNum = false;
+        } else if (number === "⌫") {
+            out_num.innerText = out_num.innerText.slice(0, -1);
+            continuousNum = true;
+        } else if (number === "x²") {
+            out_num.innerText = Math.pow(parseFloat(out_num.innerText), 2);
+        } else if (number === "1/x") {
+            out_num.innerText = 1 / parseFloat(out_num.innerText);
+        } else if (number === "√x") {
+            out_num.innerText = Math.sqrt(parseFloat(out_num.innerText));
+        } else if (number === "+/-") {
+            out_num.innerText = `-${out_num.innerText}`;
+        } else if (number === ".") {
+            out_num.innerText += ".";
+        }
+        else {
+            if (out_num.innerText !== "") {
+                out_sym.innerText += ` ${out_num.innerText} ${number} `;
+                out_num.innerText = "";
+            }
+            continuousNum = false;
+        }
+    }
+</script>
