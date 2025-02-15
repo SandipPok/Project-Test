@@ -100,9 +100,20 @@
             out_num.innerText += ".";
         }
         else {
-            if (out_num.innerText !== "") {
+            if (out_num.innerText !== "" && out_sym.innerText !== "") {
+                let expression = out_sym.innerText.trim();
+                if (out_num.innerText.trim() !== "") {
+                    expression += ` ${out_num.innerText.trim()}`;
+                }
+                expression = expression.replace(/x/g, '*').replace(/÷/g, '/');
+
+                expression = eval(expression);
+
+                out_sym.innerText = ` ${expression} ${number} `;
+                out_num.innerText = expression;
+            }
+            else if (out_num.innerText !== "") {
                 out_sym.innerText += ` ${out_num.innerText} ${number} `;
-                out_num.innerText = "";
             }
             continuousNum = false;
         }
