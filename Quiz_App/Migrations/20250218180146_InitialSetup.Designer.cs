@@ -12,7 +12,7 @@ using Quiz_App.Data;
 namespace Quiz_App.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250218171212_Initial-Setup")]
+    [Migration("20250218180146_InitialSetup")]
     partial class InitialSetup
     {
         /// <inheritdoc />
@@ -110,9 +110,6 @@ namespace Quiz_App.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AnserId")
-                        .HasColumnType("int");
 
                     b.Property<int>("AnswerId")
                         .HasColumnType("int");

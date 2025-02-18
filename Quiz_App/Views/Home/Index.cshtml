@@ -1,8 +1,21 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Quiz>
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>Welcome to the Quiz App!</h1>
+
+<p>Select a quiz to get started:</p>
+
+<!-- List of quizzes available on the home page -->
+<div class="quiz-list">
+    @foreach (var quiz in Model)
+    {
+        <div class="quiz-item">
+            <h3>@quiz.Title</h3>
+            <p>@quiz.Description</p>
+            <a asp-action="StartQuiz" asp-controller="Quiz" asp-route-id="@quiz.Id" class="btn btn-primary">Start Quiz</a>
+        </div>
+    }
 </div>

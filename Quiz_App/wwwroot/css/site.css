@@ -20,3 +20,29 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.quiz-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.quiz-item {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+    .quiz-item h3 {
+        margin: 0;
+        font-size: 1.5em;
+    }
+
+    .quiz-item p {
+        margin: 10px 0;
+        font-size: 1em;
+    }
+
+    .quiz-item .btn {
+        margin-top: 10px;
+    }

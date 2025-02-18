@@ -108,9 +108,6 @@ namespace Quiz_App.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AnserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("AnswerId")
                         .HasColumnType("int");
 
